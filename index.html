@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scanner Exchange</title>
+<style>
+body{font-family:Arial,sans-serif;background:#101820;color:#fff;margin:0;padding:16px}
+h1{color:#45d483;text-align:center}
+.card{background:#1d2b36;padding:16px;margin:12px 0;border-radius:12px}
+label{display:block;margin:12px 0 6px}
+input,button{width:100%;padding:12px;border-radius:8px;border:0;box-sizing:border-box;font-size:16px}
+input{background:#fff;color:#111}
+button{background:#45d483;color:#102019;font-weight:bold;margin-top:12px}
+.small{color:#b8c8d2;font-size:13px;line-height:1.5}
+.result{border-left:4px solid #45d483}
+</style>
+</head>
+<body>
+<h1>⚽ Scanner Exchange</h1>
+<p style="text-align:center">Analizzatore statistico delle partite di calcio</p><div class="card">
+<h2>Strategia Over 1.5</h2>
+<p>Una squadra supera il criterio se almeno 4 delle sue ultime 5 partite concluse hanno avuto almeno 2 gol complessivi.</p>
+<label for="home">Squadra di casa</label>
+<input id="home" placeholder="Es. Milan">
+<label for="away">Squadra ospite</label>
+<input id="away" placeholder="Es. Inter">
+<label for="h">Over 1.5 nelle ultime 5 — squadra casa</label>
+<input id="h" type="number" min="0" max="5" value="4">
+<label for="a">Over 1.5 nelle ultime 5 — squadra ospite</label>
+<input id="a" type="number" min="0" max="5" value="4">
+<button onclick="analizza()">Analizza partita</button>
+<div id="risultato" class="card result" hidden></div>
+</div><div class="card">
+<h2>Come funziona</h2>
+<p class="small">Questa prima versione permette di verificare manualmente il criterio statistico. Non è ancora collegata a un fornitore di risultati reali né alle quote Betfair. I valori iniziali sono solo esempi.</p>
+</div><script>
+function analizza(){
+ const casa=document.getElementById('home').value.trim()||'Squadra di casa';
+ const ospite=document.getElementById('away').value.trim()||'Squadra ospite';
+ const h=document.getElementById('h').value;
+ const a=document.getElementById('a').value;
+ const box=document.getElementById('risultato');
+ if(h===''||a===''||Number(h)<0||Number(h)>5||Number(a)<0||Number(a)>5||!Number.isInteger(Number(h))||!Number.isInteger(Number(a))){
+  alert('Inserisci due numeri interi da 0 a 5.');
+  return;
+ }
+ const ok=Number(h)>=4&&Number(a)>=4;
+ box.hidden=false;
+ box.innerHTML='<h3>'+(ok?'✅ CRITERIO SODDISFATTO':'❌ CRITERIO NON SODDISFATTO')+'</h3><p>'+casa+' — '+ospite+'</p><p>Over 1.5: '+h+'/5 e '+a+'/5</p><p>'+(ok?'Entrambe le squadre rispettano il requisito statistico.':'Almeno una squadra non raggiunge 4 risultati Over 1.5 su 5.')+'</p>';
+}
+</script></body>
+</html>
